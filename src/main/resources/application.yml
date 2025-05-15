@@ -2,7 +2,7 @@ spring:
   application:
     name: order-importer-api
   datasource:
-    url: jdbc:postgresql://localhost:5432/db
+    url: jdbc:postgresql://0.0.0.0:5432/order-db
     username: user
     password: password
   jpa:
@@ -15,4 +15,4 @@ logging:
 ### LIQUIBASE ###
 liquibase:
   enabled: true
-  liquibase-schema: hello-user
+  liquibase-schema: order-db

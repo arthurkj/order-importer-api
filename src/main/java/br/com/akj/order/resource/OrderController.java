@@ -3,7 +3,7 @@ package br.com.akj.order.resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.akj.order.service.user.OrderImportServic;
+import br.com.akj.order.service.user.OrderImportService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderImportServic helloUserService;
+    private final OrderImportService orderImportService;
 
 
 }
