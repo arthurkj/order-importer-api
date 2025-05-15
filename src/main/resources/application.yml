@@ -1,6 +1,6 @@
 spring:
   application:
-    name: order-api
+    name: order-importer-api
   datasource:
     url: jdbc:postgresql://localhost:5432/db
     username: user
@@ -10,14 +10,7 @@ spring:
 
 logging:
   level:
-    br.com.akj: DEBUG
-
-### ACTUATOR ###
-# set to always show the details at health check endpoint
-management:
-  endpoint.health.show-details: always
-# set the resources to be exposed
-  endpoints.web.exposure.include: health,info,metrics
+    br.com.akj.order: DEBUG
 
 ### LIQUIBASE ###
 liquibase:
