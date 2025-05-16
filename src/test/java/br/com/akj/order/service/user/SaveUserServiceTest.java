@@ -1,5 +1,6 @@
 package br.com.akj.order.service.user;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 import br.com.akj.order.builder.user.UserEntityBuilder;
@@ -34,15 +35,17 @@ class SaveUserServiceTest {
         Map<Long, UserToImportDTO> usersToImport = new HashMap<>();
         usersToImport.put(userId, userDto);
 
-        UserEntity mockEntity = mock(UserEntity.class);
 
-        try (MockedStatic<UserEntityBuilder> mockedBuilder = mockStatic(UserEntityBuilder.class)) {
-            mockedBuilder.when(() -> UserEntityBuilder.userEntityBuild(userDto)).thenReturn(mockEntity);
+        UserEntity userEntity = Fixture.make(UserEntity.class);
 
-            service.saveUser(usersToImport);
+        final List<UserEntity> userList = List.of(userEntity);
 
-            mockedBuilder.verify(() -> UserEntityBuilder.userEntityBuild(userDto));
-            verify(userRepository).saveAll(List.of(mockEntity));
-        }
+        when(userRepository.saveAll(anyList())).thenReturn(userList);
+
+        final List<UserEntity> result = service.saveUser(usersToImport);
+
+        verify(userRepository).saveAll(anyList());
+
+        assertEquals(userList, result);
     }
 }

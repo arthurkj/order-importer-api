@@ -1,8 +1,11 @@
 package br.com.akj.order.service.order;
 
 import br.com.akj.order.dto.UserToImportDTO;
+import br.com.akj.order.dto.response.UserResponse;
+import br.com.akj.order.entity.UserEntity;
 import br.com.akj.order.errors.Error;
 import br.com.akj.order.exception.BusinessErrorException;
+import br.com.akj.order.fixture.Fixture;
 import br.com.akj.order.helper.MessageHelper;
 import br.com.akj.order.service.user.SaveUserService;
 import org.junit.jupiter.api.Test;
@@ -15,8 +18,10 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -40,7 +45,13 @@ class ImportOrderFileServiceTest {
         final String content = "0000000001John Doe                                     000000000100000000020000000050.1520210101";
         final MultipartFile file = new MockMultipartFile("file.txt", content.getBytes());
 
-        service.importFile(file);
+        final UserEntity userEntity = new UserEntity();
+        userEntity.setOrders(emptyList());
+        final List<UserEntity> userEntities = List.of(userEntity);
+
+        when(saveUserService.saveUser(anyMap())).thenReturn(userEntities);
+
+        final List<UserResponse> result = service.importFile(file);
 
         ArgumentCaptor<Map<Long, UserToImportDTO>> captor = ArgumentCaptor.forClass(Map.class);
         verify(saveUserService).saveUser(captor.capture());
@@ -48,6 +59,7 @@ class ImportOrderFileServiceTest {
         Map<Long, UserToImportDTO> users = captor.getValue();
         UserToImportDTO user = users.get(expectedId);
         assertEquals(expectedName, user.name());
+        assertEquals(1, result.size());
     }
 
     @Test
