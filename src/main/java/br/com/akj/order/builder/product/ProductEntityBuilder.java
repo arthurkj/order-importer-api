@@ -1,4 +1,4 @@
-package br.com.akj.order.builder;
+package br.com.akj.order.builder.product;
 
 import br.com.akj.order.dto.ProductToImportDTO;
 import br.com.akj.order.entity.OrderEntity;

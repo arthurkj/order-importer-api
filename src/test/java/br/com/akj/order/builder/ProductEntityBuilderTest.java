@@ -1,5 +1,6 @@
 package br.com.akj.order.builder;
 
+import br.com.akj.order.builder.product.ProductEntityBuilder;
 import br.com.akj.order.dto.ProductToImportDTO;
 import br.com.akj.order.entity.OrderEntity;
 import br.com.akj.order.entity.ProductEntity;

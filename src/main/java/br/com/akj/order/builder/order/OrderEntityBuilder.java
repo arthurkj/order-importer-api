@@ -1,12 +1,10 @@
-package br.com.akj.order.builder;
+package br.com.akj.order.builder.order;
 
 import br.com.akj.order.dto.OrderToImportDTO;
-import br.com.akj.order.dto.ProductToImportDTO;
 import br.com.akj.order.entity.OrderEntity;
-import br.com.akj.order.entity.ProductEntity;
 import br.com.akj.order.entity.UserEntity;
 
-import static br.com.akj.order.builder.ProductEntityBuilder.productEntityBuild;
+import static br.com.akj.order.builder.product.ProductEntityBuilder.productEntityBuild;
 
 public class OrderEntityBuilder {
 

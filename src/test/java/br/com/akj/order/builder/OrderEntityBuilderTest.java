@@ -1,14 +1,13 @@
 package br.com.akj.order.builder;
 
+import br.com.akj.order.builder.order.OrderEntityBuilder;
 import br.com.akj.order.dto.OrderToImportDTO;
 import br.com.akj.order.dto.ProductToImportDTO;
 import br.com.akj.order.entity.OrderEntity;
-import br.com.akj.order.entity.ProductEntity;
 import br.com.akj.order.entity.UserEntity;
 import br.com.akj.order.fixture.Fixture;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 

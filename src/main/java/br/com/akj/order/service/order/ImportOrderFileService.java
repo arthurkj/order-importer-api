@@ -1,8 +1,11 @@
 package br.com.akj.order.service.order;
 
+import br.com.akj.order.builder.user.UserResponseBuilder;
 import br.com.akj.order.dto.OrderToImportDTO;
 import br.com.akj.order.dto.ProductToImportDTO;
 import br.com.akj.order.dto.UserToImportDTO;
+import br.com.akj.order.dto.response.UserResponse;
+import br.com.akj.order.entity.UserEntity;
 import br.com.akj.order.errors.Error;
 import br.com.akj.order.exception.BusinessErrorException;
 import br.com.akj.order.helper.MessageHelper;
@@ -20,6 +23,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static br.com.akj.order.service.order.ImportOrderFileConfig.*;
@@ -32,15 +36,17 @@ public class ImportOrderFileService {
     private final MessageHelper messageHelper;
     private final SaveUserService saveUserService;
 
-    public void importFile(@NonNull final MultipartFile file) {
+    public List<UserResponse> importFile(@NonNull final MultipartFile file) {
         log.info("Importing order file {}", file.getOriginalFilename());
 
         String content = readFile(file);
 
-        Map<Long, UserToImportDTO> usersToImport = convertContentToUserMap(content);
-        saveUserService.saveUser(usersToImport);
+        final Map<Long, UserToImportDTO> usersToImport = convertContentToUserMap(content);
+        final List<UserEntity> users = saveUserService.saveUser(usersToImport);
 
         log.info("file {} imported", file.getOriginalFilename());
+
+        return users.stream().map(UserResponseBuilder::userResponseBuild).toList();
     }
 
     private Map<Long, UserToImportDTO> convertContentToUserMap(String content) {

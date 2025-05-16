@@ -1,4 +1,4 @@
-package br.com.akj.order.builder;
+package br.com.akj.order.builder.user;
 
 import br.com.akj.order.dto.UserToImportDTO;
 import br.com.akj.order.entity.OrderEntity;
@@ -6,7 +6,7 @@ import br.com.akj.order.entity.UserEntity;
 
 import java.util.List;
 
-import static br.com.akj.order.builder.OrderEntityBuilder.orderEntityBuild;
+import static br.com.akj.order.builder.order.OrderEntityBuilder.orderEntityBuild;
 
 public class UserEntityBuilder {
 

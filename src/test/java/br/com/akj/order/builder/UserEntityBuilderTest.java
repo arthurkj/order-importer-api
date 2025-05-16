@@ -1,5 +1,6 @@
 package br.com.akj.order.builder;
 
+import br.com.akj.order.builder.user.UserEntityBuilder;
 import br.com.akj.order.dto.UserToImportDTO;
 import br.com.akj.order.entity.UserEntity;
 import br.com.akj.order.fixture.Fixture;
