@@ -11,7 +11,10 @@ import java.math.BigDecimal;
 public class ProductEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long productId;
 
     private BigDecimal value;
 

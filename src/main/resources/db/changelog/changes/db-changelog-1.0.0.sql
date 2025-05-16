@@ -8,6 +8,8 @@ name VARCHAR(45) NOT NULL
 
 CREATE TABLE orders (
 id BIGINT PRIMARY KEY,
+total_value DECIMAL(10, 2) NOT NULL,
+purchase_date DATE NOT NULL,
 user_id BIGINT NOT NULL,
 CONSTRAINT fk_user
       FOREIGN KEY(user_id)
@@ -15,7 +17,8 @@ CONSTRAINT fk_user
 );
 
 CREATE TABLE products (
-id BIGINT PRIMARY KEY,
+id SERIAL PRIMARY KEY,
+product_id BIGINT NOT NULL,
 order_id BIGINT NOT NULL,
 value DECIMAL(10, 2) NOT NULL,
 CONSTRAINT fk_order

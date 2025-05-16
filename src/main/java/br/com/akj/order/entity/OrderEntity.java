@@ -2,12 +2,11 @@ package br.com.akj.order.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity(name = "Order")
@@ -25,6 +24,12 @@ public class OrderEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<ProductEntity> products;
+
+    public void setProducts(final List<ProductEntity> products) {
+        this.products = products;
+        this.totalValue = products.stream().map(ProductEntity::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 }
