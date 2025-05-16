@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static br.com.akj.order.service.order.ImportOrderFileConfig.*;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class OrderImportService {
+public class ImportOrderFileService {
 
     private final MessageHelper messageHelper;
     private final SaveUserService saveUserService;
@@ -44,32 +46,18 @@ public class OrderImportService {
     private Map<Long, UserToImportDTO> convertContentToUserMap(String content) {
         final Map<Long, UserToImportDTO> users = new HashMap<>();
 
-        final String[] lines = content.split("\n");
+        final String[] lines = content.split(LINE_BREAK);
         for (String line : lines) {
-            Long userId = Long.parseLong(line.substring(0, 10));
-            String userName = line.substring(10, 55).trim();
-            Long orderId = Long.parseLong(line.substring(55, 65));
-            Long productId = Long.parseLong(line.substring(65, 75));
-            BigDecimal productValue = new BigDecimal(line.substring(75, 87).trim());
-            LocalDate purchaseDate = LocalDate.parse(line.substring(87, 95), DateTimeFormatter.ofPattern("yyyyMMdd"));
+            Long userId = Long.parseLong(line.substring(USER_ID_START, USER_ID_END));
+            String userName = line.substring(USER_NAME_START, USER_NAME_END).trim();
+            Long orderId = Long.parseLong(line.substring(ORDER_ID_START, ORDER_ID_END));
+            Long productId = Long.parseLong(line.substring(PRODUCT_ID_START, PRODUCT_ID_END));
+            BigDecimal productValue = new BigDecimal(line.substring(PRODUCT_VALUE_START, PRODUCT_VALUE_END).trim());
+            LocalDate purchaseDate = LocalDate.parse(line.substring(PURCHASE_START, PURCHASE_END), DateTimeFormatter.ofPattern(DATA_FORMATTER_PATTERN));
 
-            UserToImportDTO user;
+            UserToImportDTO user = users.computeIfAbsent(userId, id -> new UserToImportDTO(id, userName, new HashMap<>()));
 
-            if (users.containsKey(userId)) {
-                user = users.get(userId);
-            } else {
-                user = new UserToImportDTO(userId, userName, new HashMap<>());
-                users.put(userId, user);
-            }
-
-            OrderToImportDTO order;
-
-            if (user.orders().containsKey(orderId)) {
-                order = user.orders().get(orderId);
-            } else {
-                order = new OrderToImportDTO(orderId, purchaseDate, new ArrayList<>());
-                user.orders().put(orderId, order);
-            }
+            OrderToImportDTO order = user.orders().computeIfAbsent(orderId, id -> new OrderToImportDTO(id, purchaseDate, new ArrayList<>()));
 
             ProductToImportDTO product = new ProductToImportDTO(productId, productValue);
             order.products().add(product);
