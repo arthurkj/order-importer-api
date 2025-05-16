@@ -1,8 +1,12 @@
 package br.com.akj.order.service.order;
 
+import br.com.akj.order.entity.ProductEntity;
 import br.com.akj.order.errors.Error;
 import br.com.akj.order.exception.BusinessErrorException;
 import br.com.akj.order.helper.MessageHelper;
+import br.com.akj.order.repository.OrderRepository;
+import br.com.akj.order.repository.ProductRepository;
+import br.com.akj.order.repository.UserRepository;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,10 @@ import java.nio.charset.StandardCharsets;
 public class OrderImportService {
 
     private final MessageHelper messageHelper;
+    private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+
 
     public void importFile(@NonNull final MultipartFile file) {
         log.info("Importing order file {}", file.getOriginalFilename());
